@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  db:
+    container_name: postgres
+    restart: always
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=yunching
+      - POSTGRES_PASSWORD=supersecret
+    volumes:
+      - ~/docker/volumes/database:/var/lib/postgresql/data
+    ports:
+      - "5431:5432"
+    networks:
+      - postgres
+#  pgadmin:
+#    image: fenglc/pgadmin4
+#    depends_on: 
+#      - db
+#    links: 
+#      - db
+#    restart: always
+#    environment:
+#      - PGADMIN_DEFAULT_EMAIL=yunching
+#      - PGADMIN_DEFAULT_PASSWORD=test
+#    ports:
+#    - "80:5050"
+#    volumes:
+#      - ~/docker/volumes/pgadmin:/root/.pgadmin
+  r:
+    image: rocker/verse
+    links:
+      - db
+    restart: always
+    ports:
+      - "8787:8787"
+    environment:
+      #user name is "rstudio"
+      - USER=yunching
+      - PASSWORD=test
+      - ROOT=true
+    volumes:
+      - ~/docker/volumes/rstudio:/home/yunching/rstudio
+      - /var/lib/apt/lists:/var/lib/apt/lists:ro
+    networks:
+      - postgres
+
+networks:
+  postgres:
+    driver: bridge
