@@ -42,7 +42,7 @@ services:
       - ROOT=true
     volumes:
       - ~/docker/volumes/rstudio:/home/yunching/rstudio
-      - /var/lib/apt/lists:/var/lib/apt/lists
+      - /etc/apt:/etc/apt
       - ~/docker/volumes/rstudio_site_library:/usr/local/lib/R/site-library
     networks:
       - postgres
